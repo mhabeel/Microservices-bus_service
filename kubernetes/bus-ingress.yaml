@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bus-ingress
+  namespace: bus
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: bus/cors
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  rules:
+    - host: bus.edu.smef.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bus-app-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - bus.edu.smef.io
+      secretName: default
